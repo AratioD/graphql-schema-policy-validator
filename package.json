@@ -1,6 +1,6 @@
 {
-  "name": "graphql-schema-linter",
-  "module": "cli.ts",
+  "name": "graphql-schema-policy-linter",
+  "module": "src/cli.ts",
   "type": "module",
   "devDependencies": {
     "@biomejs/biome": "1.9.4",

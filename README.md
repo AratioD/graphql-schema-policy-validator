@@ -1,4 +1,4 @@
-# graphql-schema-linter
+# graphql-schema-policy-validator
 
 To install dependencies:
 
@@ -12,19 +12,15 @@ To run:
 bun run src/clits
 ```
 
-This project purpose is to provide graphql schema linter which is
+This project purpose is to provide `graphql-schema-policy-validator`. The tool guard your project/team/company defined schema policy. If there is something which breaks the policy the tool will show a warning or error
 
 * easy to config and set up
-* which provides largest prefined rules and possibilities to fine tune your schema rules
+* the tool provides largest prefined rules and possibilities to guard your schema policy
 * works in commit hooks and ci/cd pipelines
 
-The file `graphql-schema-linter-config.ts`
-contains all project specific config paramters.project
+In the file `graphql-schema-policy-validator-config.ts`
+ you can define all project specific config parameters.
 
-* What you need to define is your schema location.
-
-* your custom rules file path,
-
-* your build in rules what you are using in your schema.
-
-This project was created using `bun init` in bun v1.1.40. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+* You need to define your schema location.
+* Your custom rules file path
+* Your build in rules what you are using in your schema.
