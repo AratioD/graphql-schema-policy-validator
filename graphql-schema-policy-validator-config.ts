@@ -1,2 +1,1 @@
-export const schemaLocation = './demoSchema/'
-
+export const schemaLocation = "./demoSchema/";

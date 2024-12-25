@@ -1,35 +1,36 @@
 # schema.graphql
-
-# Define a simple type
+# Define the Snack type with some fields
 type Snack {
-  id: ID!
-  name: String!
-  price: Float!
+	# id, this is something
+	id: ID!
+	name: String!
+	price: Float!
 }
 
 # Define the Query type with some fields
 type Query {
-  snacks: [Snack!]!
-  snack(id: ID!): Snack
+	snacks: [Snack!]!
+	snack(id: ID!): Snack
 }
 
 # Define the Mutation type with some fields
 type Mutation {
-  addSnack(name: String!, price: Float!): Snack!
-  updateSnack(id: ID!, name: String, price: Float): Snack!
-  deleteSnack(id: ID!): Boolean!
+	addSnack(name: String!, price: Float!): Snack!
+	updateSnack(id: ID!, name: String, price: Float): Snack!
+	deleteSnack(id: ID!): Boolean!
 }
-
-# Define the Subscription type with some fields
+# this is type Subscription documentation
 type Subscription {
-  snackAdded: Snack!
-  snackUpdated: Snack!
-  snackDeleted: ID!
+	snackAdded: Snack!
+	# this is snackUpdated documentation
+	snackUpdated: Snack!
+	# this is snackDeleted documentation
+	snackDeleted: ID!
 }
 
 # The schema definition
 schema {
-  query: Query
-  mutation: Mutation
-  subscription: Subscription
+	query: Query
+	mutation: Mutation
+	subscription: Subscription
 }
