@@ -1,15 +1,15 @@
 import { GraphQLFileLoader } from "@graphql-tools/graphql-file-loader";
 import { loadSchema } from "@graphql-tools/load";
 import { program } from "commander";
-import { validateDocumentation } from "./validate";
+import { validateSubscriptionFields as subscriptionFieldsDocumentationValidation } from "./validate/documentation";
 
-async function lintSchema(schemaPath: string) {
+const lintSchema = async (schemaPath: string) => {
 	try {
 		const schema = await loadSchema(schemaPath, {
 			loaders: [new GraphQLFileLoader()],
 		});
 		console.log(`✅ Schema loaded successfully: ${schemaPath}`);
-		validateDocumentation(schema);
+		subscriptionFieldsDocumentationValidation(schema);
 	} catch (error) {
 		console.error(`❌ Failed to load schema: ${schemaPath}`);
 		console.error(error.message);
@@ -17,13 +17,6 @@ async function lintSchema(schemaPath: string) {
 	}
 }
 
-async function formatSchema(schemaPath: string) {
-	// Example: Add schema formatting logic here
-	console.log(`ℹ️ Formatting schema: ${schemaPath}`);
-	// For now, just simulate
-}
-
-// Command-line argument parsing
 program
 	.name("graphql-schema-policy-validator")
 	.description("CLI tool for validating your schema policy")
