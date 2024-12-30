@@ -1,9 +1,9 @@
-import type { GraphQLObjectType, GraphQLSchema } from "graphql"
+import type { GraphQLObjectType, GraphQLSchema } from 'graphql'
 
 export const validateSubscriptionType = async (schema: GraphQLSchema) => {
   const errors: string[] = []
   console.log(
-    "ℹ️ Validating properties of the GraphQL subscription type for the schema...",
+    'ℹ️ Validating properties of the GraphQL subscription type for the schema...',
   )
 
   const comment =
@@ -23,12 +23,12 @@ export const validateSubscriptionType = async (schema: GraphQLSchema) => {
 
 export const validateSubscriptionFields = async (schema: GraphQLSchema) => {
   console.log(
-    "ℹ️ Validating properties of the GraphQL subscription fields for the schema...",
+    'ℹ️ Validating properties of the GraphQL subscription fields for the schema...',
   )
 
   const subscriptionType = schema.getSubscriptionType()
   if (!subscriptionType) {
-    console.log("Subscription type fields is not defined in the schema.")
+    console.log('Subscription type fields is not defined in the schema.')
     return
   }
 
@@ -44,7 +44,7 @@ const validateFields = (subscriptionType: GraphQLObjectType): string[] => {
     if (Object.prototype.hasOwnProperty.call(fields, fieldName)) {
       const fieldNode = fields[fieldName].astNode
       const isComment = fieldNode?.name?.loc?.startToken?.prev?.kind
-      if (isComment !== "Comment") {
+      if (isComment !== 'Comment') {
         const rowNumber = fieldNode?.loc?.startToken?.line
         errors.push(
           `Field: "${subscriptionType}.${fieldName}" is missing description from row → ${rowNumber}`,
@@ -58,12 +58,12 @@ const validateFields = (subscriptionType: GraphQLObjectType): string[] => {
 
 const handleErrors = (errors: string[]) => {
   if (errors.length > 0) {
-    console.error("❌ Documentation validation failed:")
+    console.error('❌ Documentation validation failed:')
     for (const error of errors) {
       console.error(`  - ${error}`)
     }
     process.exit(1)
   } else {
-    console.log("✅ Documentation validation passed.")
+    console.log('✅ Documentation validation passed.')
   }
 }
