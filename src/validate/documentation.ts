@@ -1,26 +1,22 @@
 import type { GraphQLObjectType, GraphQLSchema } from "graphql"
 
 export const validateSubscriptionType = async (schema: GraphQLSchema) => {
+	const errors: string[] = []
 	console.log(
 		"ℹ️ Validating properties of the GraphQL subscription type for the schema...",
 	)
 
-	const ifComment =
-		schema.getSubscriptionType()?.astNode?.name?.loc?.startToken?.prev?.prev
-			?.kind
-	console.log(ifComment)
 	const comment =
 		schema.getSubscriptionType()?.astNode?.name?.loc?.startToken?.prev?.prev
 			?.value
 
-	if (!ifComment) {
-		console.log("Subscription type is not documented in the schema.")
-		return
-	}
+	if (!comment) {
+		const rowNumber =
+			schema.getSubscriptionType()?.astNode?.name?.loc?.startToken?.prev?.line
 
-	if (comment && comment?.length < 10) {
-		const errors: string[] = []
-		errors.push("Field: kissa  is missing description")
+		errors.push(
+			`Type: subscription is missing description from row → ${rowNumber}`,
+		)
 		handleErrors(errors)
 	}
 }
@@ -51,7 +47,7 @@ const validateFields = (subscriptionType: GraphQLObjectType): string[] => {
 			if (isComment !== "Comment") {
 				const rowNumber = fieldNode?.loc?.startToken?.line
 				errors.push(
-					`Field: "${subscriptionType}.${fieldName}" is missing description. Row --> ${rowNumber}`,
+					`Field: "${subscriptionType}.${fieldName}" is missing description from row → ${rowNumber}`,
 				)
 			}
 		}
