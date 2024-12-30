@@ -19,12 +19,10 @@ type Mutation {
 	updateSnack(id: ID!, name: String, price: Float): Snack!
 	deleteSnack(id: ID!): Boolean!
 }
-# this is type Subscription documentation
+
 type Subscription {
 	snackAdded: Snack!
-	# this is snackUpdated documentation
 	snackUpdated: Snack!
-	# this is snackDeleted documentation
 	snackDeleted: ID!
 }
 

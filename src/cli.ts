@@ -1,32 +1,48 @@
-import { GraphQLFileLoader } from "@graphql-tools/graphql-file-loader";
-import { loadSchema } from "@graphql-tools/load";
-import { program } from "commander";
-import { validateSubscriptionFields as subscriptionFieldsDocumentationValidation } from "./validate/documentation";
+import { GraphQLFileLoader } from "@graphql-tools/graphql-file-loader"
+import { loadSchema } from "@graphql-tools/load"
+import { program } from "commander"
+import type { GraphQLSchema } from "graphql"
 
-const lintSchema = async (schemaPath: string) => {
+import {
+	validateSubscriptionFields,
+	validateSubscriptionType,
+} from "./validate/documentation"
+
+const validateSchema = async (schemaPath: string) => {
 	try {
 		const schema = await loadSchema(schemaPath, {
 			loaders: [new GraphQLFileLoader()],
-		});
-		console.log(`✅ Schema loaded successfully: ${schemaPath}`);
-		subscriptionFieldsDocumentationValidation(schema);
+		})
+		console.log(`✅ Schema loaded successfully: ${schemaPath}`)
+		await validate(schema)
 	} catch (error) {
-		console.error(`❌ Failed to load schema: ${schemaPath}`);
-		console.error(error.message);
-		process.exit(1);
+		console.error(`❌ Failed to load schema: ${schemaPath}`)
+
+		if (error instanceof Error) {
+			console.error(error.message)
+		} else {
+			console.error(String(error))
+		}
+
+		process.exit(1)
 	}
+}
+
+const validate = async (schema: GraphQLSchema) => {
+	await validateSubscriptionType(schema)
+	await validateSubscriptionFields(schema)
 }
 
 program
 	.name("graphql-schema-policy-validator")
 	.description("CLI tool for validating your schema policy")
-	.version("0.1.0");
+	.version("0.1.0")
 
 program
 	.command("validate")
 	.alias("v")
 	.argument("<schemaPath>", "Path to the GraphQL schema file(s)")
 	.description("Validate the specified GraphQL schema policy")
-	.action(lintSchema);
+	.action(validateSchema)
 
-program.parse(process.argv);
+program.parse(process.argv)
