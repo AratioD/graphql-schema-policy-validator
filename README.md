@@ -1,26 +1,67 @@
+---
+
 # graphql-schema-policy-validator
 
-To install dependencies:
+## Installation
+
+To install the dependencies, run:
 
 ```bash
 bun install
 ```
 
-To run:
+## Usage
+
+To validate a GraphQL schema against the standard rule set, use the following command:
 
 ```bash
-bun run src/clits
+bun run src/cli.ts validate ./demoSchema ruleConfig.json
 ```
 
-This project purpose is to provide `graphql-schema-policy-validator`. The tool guard your project/team/company defined schema policy. If there is something which breaks the policy the tool will show a warning or error
+### Arguments
 
-* easy to config and set up
-* the tool provides largest prefined rules and possibilities to guard your schema policy
-* works in commit hooks and ci/cd pipelines
+- `./demoSchema`: Path to the GraphQL schema file or directory you want to validate. In your project you will use your own schema file or directory.
+- `ruleConfig.json`: Configuration file containing the rules and policies for validation.
 
-In the file `graphql-schema-policy-validator-config.ts`
- you can define all project specific config parameters.
+## Purpose
 
-* You need to define your schema location.
-* Your custom rules file path
-* Your build in rules what you are using in your schema.
+The `graphql-schema-policy-validator` is a tool designed to ensure compliance with your project, team, or company's schema policies. It validates GraphQL schemas against predefined rules and throws errors if any violations are detected.
+
+This helps maintain consistency, enforce standards, and ensure adherence to best practices across your GraphQL API development.
+
+## Supported Rules
+
+### Subscription Type Documentation
+
+- Ensures that the `Subscription` type and its fields have proper documentation.
+
+## Configuration
+
+You can define all project-specific configuration parameters in the `ruleConfig.json` file.
+
+Example `ruleConfig.json`:
+
+```json
+{
+  "rules": {
+    "validateSubscriptionType": true,
+    "validateSubscriptionFields": true
+  }
+}
+```
+
+### Example File Structure
+
+```plaintext
+.
+├── demoSchema/
+│   ├── schema.graphql
+├── ruleConfig.json
+├── src/
+│   ├── cli.ts
+├── package.json
+```
+
+## Contributing
+
+Contributions to the `graphql-schema-policy-validator` are welcome! Feel free to submit issues, feature requests, or pull requests to help improve the project.

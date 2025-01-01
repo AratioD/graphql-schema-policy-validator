@@ -20,6 +20,7 @@ type Mutation {
   deleteSnack(id: ID!): Boolean!
 }
 
+# This is subscription documentation
 type Subscription {
   # this is snackAdded documentation
   snackAdded: Snack!

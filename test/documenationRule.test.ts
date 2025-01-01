@@ -8,6 +8,12 @@ const validSchemaPath = path.resolve(
   'fixtures',
   'valid-schema.graphql',
 )
+
+const validConfigPath = path.resolve(
+  __dirname,
+  'fixtures',
+  'test-ruleConfig.json',
+)
 const invalidSchemaPath = path.resolve(
   __dirname,
   'fixtures',
@@ -17,7 +23,7 @@ const invalidSchemaPath = path.resolve(
 describe('graphql-schema-policy-validator CLI (Integration)', () => {
   test('should validate a valid schema', (done) => {
     exec(
-      `bun ${cliPath} validate ${validSchemaPath}`,
+      `bun ${cliPath} validate ${validSchemaPath} ${validConfigPath}`,
       (error, stdout, stderr) => {
         expect(error).toBeNull()
         expect(stdout).toContain(

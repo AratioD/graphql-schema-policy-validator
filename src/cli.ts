@@ -1,3 +1,4 @@
+import * as fs from 'node:fs'
 import { GraphQLFileLoader } from '@graphql-tools/graphql-file-loader'
 import { loadSchema } from '@graphql-tools/load'
 import { program } from 'commander'
@@ -8,13 +9,21 @@ import {
   validateSubscriptionType,
 } from './validate/documentation'
 
-export const validateSchema = async (schemaPath: string) => {
+interface ValidationRules {
+  validateSubscriptionType: boolean
+  validateSubscriptionFields: boolean
+}
+
+export const validateSchema = async (
+  schemaPath: string,
+  configPath: string,
+) => {
   try {
     const schema = await loadSchema(schemaPath, {
       loaders: [new GraphQLFileLoader()],
     })
     console.log(`✅ Schema loaded successfully: ${schemaPath}`)
-    await validate(schema)
+    await validate(schema, configPath)
   } catch (error) {
     console.error(`❌ Failed to load schema: ${schemaPath}`)
 
@@ -28,9 +37,25 @@ export const validateSchema = async (schemaPath: string) => {
   }
 }
 
-const validate = async (schema: GraphQLSchema) => {
-  await validateSubscriptionType(schema)
-  await validateSubscriptionFields(schema)
+const readConfig = (filePath: string): { rules: ValidationRules } => {
+  try {
+    const fileContent = fs.readFileSync(filePath, 'utf8')
+    return JSON.parse(fileContent) as { rules: ValidationRules }
+  } catch (error) {
+    throw new Error(
+      `Failed to read or parse the config file: ${error instanceof Error ? error.message : String(error)}`,
+    )
+  }
+}
+
+const validate = async (schema: GraphQLSchema, configFile: string) => {
+  const config = readConfig(configFile)
+  if (config.rules.validateSubscriptionType) {
+    await validateSubscriptionType(schema)
+  }
+  if (config.rules.validateSubscriptionFields) {
+    await validateSubscriptionFields(schema)
+  }
 }
 
 program
@@ -42,6 +67,7 @@ program
   .command('validate')
   .alias('v')
   .argument('<schemaPath>', 'Path to the GraphQL schema file(s)')
+  .argument('<configFile>', 'Path to the config rule file')
   .description('Validate the specified GraphQL schema policy')
   .action(validateSchema)
 
