@@ -1,4 +1,4 @@
-import { describe, test, expect } from 'bun:test'
+import { describe, expect, test } from 'bun:test'
 import { exec } from 'node:child_process'
 import path from 'node:path'
 
