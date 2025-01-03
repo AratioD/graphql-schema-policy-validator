@@ -7,11 +7,15 @@ import type { GraphQLSchema } from 'graphql'
 import {
   validateSubscriptionFields,
   validateSubscriptionType,
+  validateQueryType,
+  validateQueryFields,
 } from './validate/documentation'
 
 interface ValidationRules {
   validateSubscriptionType: boolean
   validateSubscriptionFields: boolean
+  validateQueryType: boolean
+  validateQueryFields: boolean
 }
 
 export const validateSchema = async (
@@ -55,6 +59,12 @@ const validate = async (schema: GraphQLSchema, configFile: string) => {
   }
   if (config.rules.validateSubscriptionFields) {
     await validateSubscriptionFields(schema)
+  }
+  if (config.rules.validateQueryType) {
+    await validateQueryType(schema)
+  }
+  if (config.rules.validateQueryFields) {
+    await validateQueryFields(schema)
   }
 }
 

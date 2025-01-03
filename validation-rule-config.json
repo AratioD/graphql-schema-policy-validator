@@ -1,6 +1,8 @@
 {
   "rules": {
     "validateSubscriptionType": true,
-    "validateSubscriptionFields": true
+    "validateSubscriptionFields": true,
+    "validateQueryType": true,
+    "validateQueryFields": true
   }
 }

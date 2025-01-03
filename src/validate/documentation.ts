@@ -36,6 +36,39 @@ export const validateSubscriptionFields = async (schema: GraphQLSchema) => {
   handleErrors(errors)
 }
 
+export const validateQueryType = async (schema: GraphQLSchema) => {
+  const errors: string[] = []
+  console.log(
+    'ℹ️ Validating properties of the GraphQL Query type for the schema...',
+  )
+
+  const comment =
+    schema.getQueryType()?.astNode?.name?.loc?.startToken?.prev?.prev?.value
+
+  if (!comment) {
+    const rowNumber =
+      schema.getQueryType()?.astNode?.name?.loc?.startToken?.prev?.line
+
+    errors.push(`Type: Query is missing description from row → ${rowNumber}`)
+    handleErrors(errors)
+  }
+}
+
+export const validateQueryFields = async (schema: GraphQLSchema) => {
+  console.log(
+    'ℹ️ Validating properties of the GraphQL Query fields for the schema...',
+  )
+
+  const queryType = schema.getQueryType()
+  if (!queryType) {
+    console.log('Query type fields is not defined in the schema.')
+    return
+  }
+
+  const errors = validateFields(queryType)
+  handleErrors(errors)
+}
+
 const validateFields = (subscriptionType: GraphQLObjectType): string[] => {
   const errors: string[] = []
   const fields = subscriptionType.getFields()
