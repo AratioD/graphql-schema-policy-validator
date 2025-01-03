@@ -1,0 +1,6 @@
+{
+  "rules": {
+    "validateSubscriptionType": true,
+    "validateSubscriptionFields": false
+  }
+}
