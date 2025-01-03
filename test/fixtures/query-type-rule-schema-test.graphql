@@ -1,0 +1,11 @@
+type Query {
+  # Snacks documentation
+  snacks: String!
+  # Snack documentation
+  snack(id: ID!): String!
+}
+
+# The schema definition
+schema {
+  query: Query
+}
