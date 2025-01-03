@@ -7,9 +7,11 @@ type Snack {
   price: Float!
 }
 
-# Define the Query type with some fields
+# This is Query documentation
 type Query {
+  # this is snacks documentation
   snacks: [Snack!]!
+  # this is snack documentation
   snack(id: ID!): Snack
 }
 

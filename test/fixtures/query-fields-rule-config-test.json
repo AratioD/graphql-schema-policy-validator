@@ -1,0 +1,8 @@
+{
+  "rules": {
+    "validateSubscriptionType": false,
+    "validateSubscriptionFields": false,
+    "validateQueryType": false,
+    "validateQueryFields": true
+  }
+}
