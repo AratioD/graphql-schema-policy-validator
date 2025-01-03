@@ -5,10 +5,10 @@ import { program } from 'commander'
 import type { GraphQLSchema } from 'graphql'
 
 import {
+  validateQueryFields,
+  validateQueryType,
   validateSubscriptionFields,
   validateSubscriptionType,
-  validateQueryType,
-  validateQueryFields,
 } from './validate/documentation'
 
 interface ValidationRules {

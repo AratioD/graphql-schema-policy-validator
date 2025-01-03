@@ -115,3 +115,94 @@ describe('Type Subscription Documentation Tests', () => {
     )
   })
 })
+
+describe('Type Query Documentation Tests', () => {
+  test('should validate Query type when validateQueryType is true', (done) => {
+    const schemaPath = path.resolve(
+      __dirname,
+      'fixtures',
+      'subscription-type-schema-test.graphql',
+    )
+
+    const configPath = path.resolve(
+      __dirname,
+      'fixtures',
+      'subscription-type-rule-config-test.json',
+    )
+    exec(
+      `bun ${cliPath} validate ${schemaPath} ${configPath}`,
+      (error, stdout, stderr) => {
+        expect(stdout).toContain(`✅ Schema loaded successfully: ${schemaPath}`)
+        expect(stderr).toBe(
+          '❌ Documentation validation failed:\n  - Type: Query is missing description from row → 1\n',
+        )
+        done()
+      },
+    )
+  })
+  test('should validate Query type when validateSubscriptionType is false', (done) => {
+    const schemaPath = path.resolve(
+      __dirname,
+      'fixtures',
+      'valid-schema.graphql',
+    )
+
+    const configPath = path.resolve(
+      __dirname,
+      'fixtures',
+      'subscription-type-fields-rule-config-test.json',
+    )
+    exec(
+      `bun ${cliPath} validate ${schemaPath} ${configPath}`,
+      (error, stdout, stderr) => {
+        expect(stdout).toContain(`✅ Schema loaded successfully: ${schemaPath}`)
+        expect(stderr).toBe('')
+        done()
+      },
+    )
+  })
+  test('should validate Query fields when validateQueryFields is true', (done) => {
+    const schemaPath = path.resolve(
+      __dirname,
+      'fixtures',
+      'subscription-fields-schema-test.graphql',
+    )
+
+    const configPath = path.resolve(
+      __dirname,
+      'fixtures',
+      'subscription-fields-rule-config-test.json',
+    )
+    exec(
+      `bun ${cliPath} validate ${schemaPath} ${configPath}`,
+      (error, stdout, stderr) => {
+        expect(stdout).toContain(`✅ Schema loaded successfully: ${schemaPath}`)
+        expect(stderr).toBe(
+          '❌ Documentation validation failed:\n  - Field: "Subscription.snackAdded" is missing description from row → 3\n',
+        )
+        done()
+      },
+    )
+  })
+  test('should validate Query fields when validateQueryFields is false', (done) => {
+    const schemaPath = path.resolve(
+      __dirname,
+      'fixtures',
+      'valid-schema.graphql',
+    )
+
+    const configPath = path.resolve(
+      __dirname,
+      'fixtures',
+      'subscription-type-fields-rule-config-test.json',
+    )
+    exec(
+      `bun ${cliPath} validate ${schemaPath} ${configPath}`,
+      (error, stdout, stderr) => {
+        expect(stdout).toContain(`✅ Schema loaded successfully: ${schemaPath}`)
+        expect(stderr).toBe('')
+        done()
+      },
+    )
+  })
+})
