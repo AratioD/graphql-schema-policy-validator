@@ -1,0 +1,12 @@
+# this is subscription documentation
+type Subscription {
+  snackAdded: String!
+  # this is snackUpdated documentation
+  snackUpdated: String!
+  # this snackDeleted documentation
+  snackDeleted: ID!
+}
+
+schema {
+  subscription: Subscription
+}
