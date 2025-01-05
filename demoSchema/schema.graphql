@@ -7,28 +7,20 @@ type Snack {
   price: Float!
 }
 
-# This is Query documentation
 type Query {
-  # this is snacks documentation
   snacks: [Snack!]!
-  # this is snack documentation
   snack(id: ID!): Snack
 }
 
-# Define the Mutation type with some fields
 type Mutation {
   addSnack(name: String!, price: Float!): Snack!
   updateSnack(id: ID!, name: String, price: Float): Snack!
   deleteSnack(id: ID!): Boolean!
 }
 
-# This is subscription documentation
 type Subscription {
-  # this is snackAdded documentation
   snackAdded: Snack!
-  # this is snackUpdated documentation
   snackUpdated: Snack!
-  # this snackDeleted documentation
   snackDeleted: ID!
 }
 

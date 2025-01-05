@@ -3,6 +3,8 @@
     "validateSubscriptionType": false,
     "validateSubscriptionFields": false,
     "validateQueryType": false,
-    "validateQueryFields": false
+    "validateQueryFields": false,
+    "validateMutationType": false,
+    "validateMutationFields": false
   }
 }
