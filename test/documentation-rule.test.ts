@@ -40,7 +40,7 @@ describe('Documentation Tests', () => {
     )
 
     const expectedResult = `❌ Documentation validation failed:
-  - Type: subscription is missing description from row → 18
+  - Type: Subscription is missing description from row → 18
   - Field: "Subscription.snackAdded" is missing description from row → 19
   - Field: "Subscription.snackUpdated" is missing description from row → 20
   - Field: "Subscription.snackDeleted" is missing description from row → 21
