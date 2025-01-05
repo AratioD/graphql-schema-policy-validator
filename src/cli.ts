@@ -5,6 +5,9 @@ import { program } from 'commander'
 import type { GraphQLSchema } from 'graphql'
 
 import {
+  handleErrors,
+  validateMutationFields,
+  validateMutationType,
   validateQueryFields,
   validateQueryType,
   validateSubscriptionFields,
@@ -16,6 +19,8 @@ interface ValidationRules {
   validateSubscriptionFields: boolean
   validateQueryType: boolean
   validateQueryFields: boolean
+  validateMutationType: boolean
+  validateMutationFields: boolean
 }
 
 export const validateSchema = async (
@@ -53,19 +58,27 @@ const readConfig = (filePath: string): { rules: ValidationRules } => {
 }
 
 const validate = async (schema: GraphQLSchema, configFile: string) => {
+  const errors: string[] = []
   const config = readConfig(configFile)
   if (config.rules.validateSubscriptionType) {
-    await validateSubscriptionType(schema)
+    await validateSubscriptionType(schema, errors)
   }
   if (config.rules.validateSubscriptionFields) {
-    await validateSubscriptionFields(schema)
+    await validateSubscriptionFields(schema, errors)
   }
   if (config.rules.validateQueryType) {
-    await validateQueryType(schema)
+    await validateQueryType(schema, errors)
   }
   if (config.rules.validateQueryFields) {
-    await validateQueryFields(schema)
+    await validateQueryFields(schema, errors)
   }
+  if (config.rules.validateMutationType) {
+    await validateMutationType(schema, errors)
+  }
+  if (config.rules.validateMutationFields) {
+    await validateMutationFields(schema, errors)
+  }
+  handleErrors(errors)
 }
 
 program

@@ -1,7 +1,9 @@
 import type { GraphQLObjectType, GraphQLSchema } from 'graphql'
 
-export const validateSubscriptionType = async (schema: GraphQLSchema) => {
-  const errors: string[] = []
+export const validateSubscriptionType = async (
+  schema: GraphQLSchema,
+  errors: string[],
+): Promise<void> => {
   console.log(
     'ℹ️ Validating properties of the GraphQL subscription type for the schema...',
   )
@@ -17,11 +19,13 @@ export const validateSubscriptionType = async (schema: GraphQLSchema) => {
     errors.push(
       `Type: subscription is missing description from row → ${rowNumber}`,
     )
-    handleErrors(errors)
   }
 }
 
-export const validateSubscriptionFields = async (schema: GraphQLSchema) => {
+export const validateSubscriptionFields = async (
+  schema: GraphQLSchema,
+  errors: string[],
+): Promise<void> => {
   console.log(
     'ℹ️ Validating properties of the GraphQL subscription fields for the schema...',
   )
@@ -31,13 +35,13 @@ export const validateSubscriptionFields = async (schema: GraphQLSchema) => {
     console.log('Subscription type fields is not defined in the schema.')
     return
   }
-
-  const errors = validateFields(subscriptionType)
-  handleErrors(errors)
+  errors.push(...validateFields(subscriptionType))
 }
 
-export const validateQueryType = async (schema: GraphQLSchema) => {
-  const errors: string[] = []
+export const validateQueryType = async (
+  schema: GraphQLSchema,
+  errors: string[],
+) => {
   console.log(
     'ℹ️ Validating properties of the GraphQL Query type for the schema...',
   )
@@ -50,11 +54,14 @@ export const validateQueryType = async (schema: GraphQLSchema) => {
       schema.getQueryType()?.astNode?.name?.loc?.startToken?.prev?.line
 
     errors.push(`Type: Query is missing description from row → ${rowNumber}`)
-    handleErrors(errors)
   }
+  return errors
 }
 
-export const validateQueryFields = async (schema: GraphQLSchema) => {
+export const validateQueryFields = async (
+  schema: GraphQLSchema,
+  errors: string[],
+): Promise<void> => {
   console.log(
     'ℹ️ Validating properties of the GraphQL Query fields for the schema...',
   )
@@ -65,13 +72,48 @@ export const validateQueryFields = async (schema: GraphQLSchema) => {
     return
   }
 
-  const errors = validateFields(queryType)
-  handleErrors(errors)
+  errors.push(...validateFields(queryType))
 }
 
-const validateFields = (subscriptionType: GraphQLObjectType): string[] => {
+export const validateMutationType = async (
+  schema: GraphQLSchema,
+  errors: string[],
+): Promise<void> => {
+  console.log(
+    'ℹ️ Validating properties of the GraphQL Mutation type for the schema...',
+  )
+
+  const comment =
+    schema.getMutationType()?.astNode?.name?.loc?.startToken?.prev?.prev?.value
+
+  if (!comment) {
+    const rowNumber =
+      schema.getMutationType()?.astNode?.name?.loc?.startToken?.prev?.line
+
+    errors.push(`Type: Mutation is missing description from row → ${rowNumber}`)
+  }
+}
+
+export const validateMutationFields = async (
+  schema: GraphQLSchema,
+  errors: string[],
+): Promise<void> => {
+  console.log(
+    'ℹ️ Validating properties of the GraphQL Mutation fields for the schema...',
+  )
+
+  const mutationType = schema.getMutationType()
+  if (!mutationType) {
+    console.log('Mutation type fields is not defined in the schema.')
+    return
+  }
+
+  errors.push(...validateFields(mutationType))
+}
+
+const validateFields = (grapqhlObjectType: GraphQLObjectType): string[] => {
   const errors: string[] = []
-  const fields = subscriptionType.getFields()
+  const fields = grapqhlObjectType.getFields()
 
   for (const fieldName in fields) {
     if (Object.prototype.hasOwnProperty.call(fields, fieldName)) {
@@ -80,7 +122,7 @@ const validateFields = (subscriptionType: GraphQLObjectType): string[] => {
       if (isComment !== 'Comment') {
         const rowNumber = fieldNode?.loc?.startToken?.line
         errors.push(
-          `Field: "${subscriptionType}.${fieldName}" is missing description from row → ${rowNumber}`,
+          `Field: "${grapqhlObjectType}.${fieldName}" is missing description from row → ${rowNumber}`,
         )
       }
     }
@@ -89,7 +131,7 @@ const validateFields = (subscriptionType: GraphQLObjectType): string[] => {
   return errors
 }
 
-const handleErrors = (errors: string[]) => {
+export const handleErrors = (errors: string[]) => {
   if (errors.length > 0) {
     console.error('❌ Documentation validation failed:')
     for (const error of errors) {

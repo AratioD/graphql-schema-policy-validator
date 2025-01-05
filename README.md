@@ -2,6 +2,8 @@
 
 # graphql-schema-policy-validator
 
+The tool is now under initial development. The goal is to provide a CLI tool that validates a GraphQL schema against a set of predefined rules and policies.
+
 ## Installation
 
 To install the dependencies, run:
@@ -15,13 +17,13 @@ bun install
 To validate a GraphQL schema against the standard rule set, use the following command:
 
 ```bash
-bun run src/cli.ts validate ./demoSchema ruleConfig.json
+bun run src/cli.ts validate ./demoSchema validation-rule-config.json
 ```
 
 ### Arguments
 
 - `./demoSchema`: Path to the GraphQL schema file or directory you want to validate. In your project you will use your own schema file or directory.
-- `ruleConfig.json`: Configuration file containing the rules and policies for validation.
+- `validation-rule-config.json`: Configuration file containing the rules and policies for validation.
 
 ## Purpose
 
@@ -31,21 +33,19 @@ This helps maintain consistency, enforce standards, and ensure adherence to best
 
 ## Supported Rules
 
-### Subscription Type Documentation
+You can define all project-specific configuration parameters in the `validation-rule-config.json` file.
 
-- Ensures that the `Subscription` type and its fields have proper documentation.
-
-## Configuration
-
-You can define all project-specific configuration parameters in the `ruleConfig.json` file.
-
-Example `ruleConfig.json`:
+Example `validation-rule-config.json`:
 
 ```json
 {
   "rules": {
     "validateSubscriptionType": true,
-    "validateSubscriptionFields": true
+    "validateSubscriptionFields": true,
+    "validateQueryType": true,
+    "validateQueryFields": true,
+    "validateMutationType": true,
+    "validateMutationFields": true
   }
 }
 ```
@@ -56,7 +56,7 @@ Example `ruleConfig.json`:
 .
 ├── demoSchema/
 │   ├── schema.graphql
-├── ruleConfig.json
+├── validation-rule-config.json
 ├── src/
 │   ├── cli.ts
 ├── package.json
