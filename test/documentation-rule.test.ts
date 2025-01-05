@@ -4,12 +4,12 @@ import path from 'node:path'
 
 const cliPath = path.resolve(__dirname, '../src/cli.ts')
 
-describe('Documentation Tests When All Values Are False', () => {
+describe('Documentation Tests', () => {
   test('should validate that all parameter is false', (done) => {
     const schemaPath = path.resolve(
       __dirname,
       'fixtures',
-      'valid-schema.graphql',
+      'test-schema.graphql',
     )
 
     const configPath = path.resolve(
@@ -26,101 +26,37 @@ describe('Documentation Tests When All Values Are False', () => {
       },
     )
   })
-})
-
-describe('Type Subscription Documentation Tests', () => {
-  test('should validate subscription type when validateSubscriptionType is true', (done) => {
+  test('should validate that all parameter is false', (done) => {
     const schemaPath = path.resolve(
       __dirname,
       'fixtures',
-      'subscription-type-schema-test.graphql',
+      'test-schema.graphql',
     )
 
     const configPath = path.resolve(
       __dirname,
       'fixtures',
-      'subscription-type-rule-config-test.json',
+      'all-rules-true-config-test.json',
     )
+
+    const expectedResult = `❌ Documentation validation failed:
+  - Type: subscription is missing description from row → 18
+  - Field: "Subscription.snackAdded" is missing description from row → 19
+  - Field: "Subscription.snackUpdated" is missing description from row → 20
+  - Field: "Subscription.snackDeleted" is missing description from row → 21
+  - Type: Query is missing description from row → 7
+  - Field: "Query.snacks" is missing description from row → 8
+  - Field: "Query.snack" is missing description from row → 9
+  - Type: Mutation is missing description from row → 12
+  - Field: "Mutation.addSnack" is missing description from row → 13
+  - Field: "Mutation.updateSnack" is missing description from row → 14
+  - Field: "Mutation.deleteSnack" is missing description from row → 15
+`
     exec(
       `bun ${cliPath} validate ${schemaPath} ${configPath}`,
       (error, stdout, stderr) => {
         expect(stdout).toContain(`✅ Schema loaded successfully: ${schemaPath}`)
-        expect(stderr).toBe(
-          '❌ Documentation validation failed:\n  - Type: subscription is missing description from row → 1\n',
-        )
-        done()
-      },
-    )
-  })
-  test('should validate subscription fields when validateSubscriptionFields is true', (done) => {
-    const schemaPath = path.resolve(
-      __dirname,
-      'fixtures',
-      'subscription-fields-schema-test.graphql',
-    )
-
-    const configPath = path.resolve(
-      __dirname,
-      'fixtures',
-      'subscription-fields-rule-config-test.json',
-    )
-    exec(
-      `bun ${cliPath} validate ${schemaPath} ${configPath}`,
-      (error, stdout, stderr) => {
-        expect(stdout).toContain(`✅ Schema loaded successfully: ${schemaPath}`)
-        expect(stderr).toBe(
-          '❌ Documentation validation failed:\n  - Field: "Subscription.snackAdded" is missing description from row → 3\n',
-        )
-        done()
-      },
-    )
-  })
-})
-
-describe('Type Query Documentation Tests', () => {
-  test('should validate Query type when validateQueryType is true', (done) => {
-    const schemaPath = path.resolve(
-      __dirname,
-      'fixtures',
-      'query-type-rule-schema-test.graphql',
-    )
-
-    const configPath = path.resolve(
-      __dirname,
-      'fixtures',
-      'query-type-rule-config-test.json',
-    )
-    exec(
-      `bun ${cliPath} validate ${schemaPath} ${configPath}`,
-      (error, stdout, stderr) => {
-        expect(stdout).toContain(`✅ Schema loaded successfully: ${schemaPath}`)
-        expect(stderr).toBe(
-          '❌ Documentation validation failed:\n  - Type: Query is missing description from row → 1\n',
-        )
-        done()
-      },
-    )
-  })
-
-  test('should validate Query fields when validateQueryFields is true', (done) => {
-    const schemaPath = path.resolve(
-      __dirname,
-      'fixtures',
-      'query-fields-rule-schema-test.graphql',
-    )
-
-    const configPath = path.resolve(
-      __dirname,
-      'fixtures',
-      'query-fields-rule-config-test.json',
-    )
-    exec(
-      `bun ${cliPath} validate ${schemaPath} ${configPath}`,
-      (error, stdout, stderr) => {
-        expect(stdout).toContain(`✅ Schema loaded successfully: ${schemaPath}`)
-        expect(stderr).toBe(
-          '❌ Documentation validation failed:\n  - Field: "Query.snacks" is missing description from row → 3\n',
-        )
+        expect(stderr).toBe(expectedResult)
         done()
       },
     )
