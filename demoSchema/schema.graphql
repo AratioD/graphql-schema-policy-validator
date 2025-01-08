@@ -1,10 +1,17 @@
-# schema.graphql
-# Define the Snack type with some fields
 type Snack {
-  # id, this is something
   id: ID!
   name: String!
   price: Float!
+}
+
+type SnackKissa {
+  id: ID!
+  name: String!
+}
+
+type HilmaKisu {
+  id: ID!
+  name: String!
 }
 
 type Query {
@@ -20,7 +27,7 @@ type Mutation {
 
 type Subscription {
   snackAdded: Snack!
-  snackUpdated: Snack!
+  snackUpdated: SnackKissa
   snackDeleted: ID!
 }
 
