@@ -87,6 +87,33 @@ export const validateMutationFields = (
   errors: string[],
 ): Promise<void> => validateTypeFields(schema, 'Mutation', errors)
 
+export const validateTypeType = (schema: GraphQLSchema, errors: string[]) => {
+  const typeMap = schema.getTypeMap()
+  const userDefinedTypes = Object.values(typeMap).filter((type) => {
+    if (
+      type.astNode &&
+      type.astNode.kind === 'ObjectTypeDefinition' &&
+      type.name !== 'Subscription' &&
+      type.name !== 'Query' &&
+      type.name !== 'Mutation'
+    ) {
+      return true
+    }
+    return false
+  })
+
+  for (const type of userDefinedTypes) {
+    const typeNode = type.astNode
+    const isComment = typeNode?.name?.loc?.startToken?.prev?.kind
+    if (isComment !== 'Comment') {
+      const rowNumber = typeNode?.loc?.startToken?.line
+      errors.push(
+        `Type: "${type.name}" is missing description from row → ${rowNumber}`,
+      )
+    }
+  }
+}
+
 export const handleErrors = (errors: string[]) => {
   if (errors.length > 0) {
     console.error('❌ Documentation validation failed:')

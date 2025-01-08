@@ -12,6 +12,7 @@ import {
   validateQueryType,
   validateSubscriptionFields,
   validateSubscriptionType,
+  validateTypeType,
 } from './validate/documentation'
 
 interface ValidationRules {
@@ -21,6 +22,7 @@ interface ValidationRules {
   validateQueryFields: boolean
   validateMutationType: boolean
   validateMutationFields: boolean
+  validateTypeType: boolean
 }
 
 export const validateSchema = async (
@@ -77,6 +79,9 @@ const validate = async (schema: GraphQLSchema, configFile: string) => {
   }
   if (config.rules.validateMutationFields) {
     await validateMutationFields(schema, errors)
+  }
+  if (config.rules.validateTypeType) {
+    await validateTypeType(schema, errors)
   }
   handleErrors(errors)
 }
