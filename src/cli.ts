@@ -6,6 +6,7 @@ import type { GraphQLSchema } from 'graphql'
 
 import {
   handleErrors,
+  validateBasicTypeFields,
   validateMutationFields,
   validateMutationType,
   validateQueryFields,
@@ -23,6 +24,7 @@ interface ValidationRules {
   validateMutationType: boolean
   validateMutationFields: boolean
   validateTypeType: boolean
+  validateBasicTypeFields: boolean
 }
 
 export const validateSchema = async (
@@ -81,7 +83,10 @@ const validate = async (schema: GraphQLSchema, configFile: string) => {
     await validateMutationFields(schema, errors)
   }
   if (config.rules.validateTypeType) {
-    await validateTypeType(schema, errors)
+    validateTypeType(schema, errors)
+  }
+  if (config.rules.validateBasicTypeFields) {
+    validateBasicTypeFields(schema, errors)
   }
   handleErrors(errors)
 }
