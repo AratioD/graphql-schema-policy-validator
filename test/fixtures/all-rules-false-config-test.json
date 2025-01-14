@@ -5,6 +5,8 @@
     "validateQueryType": false,
     "validateQueryFields": false,
     "validateMutationType": false,
-    "validateMutationFields": false
+    "validateMutationFields": false,
+    "validateTypeType": false,
+    "validateBasicTypeFields": false
   }
 }

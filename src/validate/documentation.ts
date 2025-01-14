@@ -1,4 +1,7 @@
+import fs from 'fs'
 import type { GraphQLObjectType, GraphQLSchema } from 'graphql'
+import { isObjectType } from 'graphql'
+import winston from 'winston'
 
 const validateType = async (
   schema: GraphQLSchema,
@@ -110,6 +113,42 @@ export const validateTypeType = (schema: GraphQLSchema, errors: string[]) => {
       errors.push(
         `Type: "${type.name}" is missing description from row → ${rowNumber}`,
       )
+    }
+  }
+}
+
+export const validateBasicTypeFields = (
+  schema: GraphQLSchema,
+  errors: string[],
+) => {
+  const typeMap = schema.getTypeMap()
+  const customTypeDefs = Object.keys(typeMap).filter(
+    (typeName) =>
+      !typeName.startsWith('__') && // Exclude introspection types
+      ![
+        'String',
+        'ID',
+        'Float',
+        'Boolean',
+        'Query',
+        'Subscription',
+        'Mutation',
+      ].includes(typeName), // Exclude scalars
+  )
+
+  for (const typeName of customTypeDefs) {
+    const type = typeMap[typeName]
+    if (isObjectType(type)) {
+      const fields = type.getFields()
+      for (const fieldName of Object.keys(fields)) {
+        const field = fields[fieldName]
+        if (!field.description) {
+          const rowNumber = field.astNode?.loc?.startToken?.line
+          errors.push(
+            `Field: "${fieldName}" of type "${typeName}" is missing a description from row -> ${rowNumber}`,
+          )
+        }
+      }
     }
   }
 }

@@ -51,6 +51,10 @@ describe('Documentation Tests', () => {
   - Field: "Mutation.addSnack" is missing description from row → 13
   - Field: "Mutation.updateSnack" is missing description from row → 14
   - Field: "Mutation.deleteSnack" is missing description from row → 15
+  - Type: "Snack" is missing description from row → 1
+  - Field: "id" of type "Snack" is missing a description from row -> 2
+  - Field: "name" of type "Snack" is missing a description from row -> 3
+  - Field: "price" of type "Snack" is missing a description from row -> 4
 `
     exec(
       `bun ${cliPath} validate ${schemaPath} ${configPath}`,
