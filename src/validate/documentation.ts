@@ -1,7 +1,5 @@
-import fs from 'fs'
 import type { GraphQLObjectType, GraphQLSchema } from 'graphql'
 import { isObjectType } from 'graphql'
-import winston from 'winston'
 
 const validateType = async (
   schema: GraphQLSchema,
