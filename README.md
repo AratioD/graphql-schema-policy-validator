@@ -2,7 +2,8 @@
 
 # graphql-schema-policy-validator
 
-The tool is now under initial development. The goal is to provide a CLI tool that validates a GraphQL schema against a set of predefined rules and policies.
+The tool is now under initial development. The goal is to provide a CLI tool that validates
+a GraphQL schema against a set of predefined rules and policies.
 
 ## Installation
 
@@ -45,22 +46,25 @@ Example `validation-rule-config.json`:
     "validateQueryType": true,
     "validateQueryFields": true,
     "validateMutationType": true,
-    "validateMutationFields": true
+    "validateMutationFields": true,
+    "validateTypeType": true,
+    "validateBasicTypeFields": true
   }
 }
 ```
 
-### Example File Structure
+## Supported Rules
 
-```plaintext
-.
-├── demoSchema/
-│   ├── schema.graphql
-├── validation-rule-config.json
-├── src/
-│   ├── cli.ts
-├── package.json
-```
+These rules ensure that the schema types and fields are properly documented:
+
+- `validateSubscriptionType`: Ensures that subscription types are documented.
+- `validateSubscriptionFields`: Ensures that subscription fields are documented.
+- `validateQueryType`: Ensures that query types are documented.
+- `validateQueryFields`: Ensures that query fields are documented.
+- `validateMutationType`: Ensures that mutation types are documented.
+- `validateMutationFields`: Ensures that mutation fields are documented.
+- `validateTypeType`: Ensures that custom types are documented.
+- `validateBasicTypeFields`: Ensures that basic type fields are documented.
 
 ## Contributing
 
